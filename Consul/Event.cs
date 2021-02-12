@@ -71,15 +71,15 @@ namespace Consul
             var req = _client.Put<byte[], EventCreationResult>(string.Format("/v1/event/fire/{0}", ue.Name), ue.Payload, q);
             if (!string.IsNullOrEmpty(ue.NodeFilter))
             {
-                req.Params["node"] = new [] { ue.NodeFilter };
+                req.Params.Set("node", ue.NodeFilter);
             }
             if (!string.IsNullOrEmpty(ue.ServiceFilter))
             {
-                req.Params["service"] = new [] { ue.ServiceFilter };
+                req.Params.Set("service", ue.ServiceFilter);
             }
             if (!string.IsNullOrEmpty(ue.TagFilter))
             {
-                req.Params["tag"] = new [] { ue.TagFilter };
+                req.Params.Set("tag", ue.TagFilter);
             }
             var res = await req.Execute(ct).ConfigureAwait(false);
             return new WriteResult<string>(res, res.Response.ID);
@@ -116,7 +116,7 @@ namespace Consul
             var req = _client.Get<UserEvent[]>("/v1/event/list", q);
             if (!string.IsNullOrEmpty(name))
             {
-                req.Params["name"] = new [] { name };
+                req.Params.Set("name", name);
             }
             return req.Execute(ct);
         }

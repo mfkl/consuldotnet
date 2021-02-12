@@ -61,7 +61,7 @@ namespace Consul
 
             HttpContent content = null;
 
-            var message = new HttpRequestMessage(HttpMethod.Post, BuildConsulUri(Endpoint, Params));
+            var message = new HttpRequestMessage(HttpMethod.Post, BuildConsulUri(Endpoint));
             ApplyHeaders(message, Client.Config);
             message.Content = content;
             var response = await Client.HttpClient.SendAsync(message, ct).ConfigureAwait(false);
@@ -104,7 +104,7 @@ namespace Consul
 
             if (!string.IsNullOrEmpty(Options.Datacenter))
             {
-                Params["dc"] = new [] { Options.Datacenter };
+                Params.Set("dc", Options.Datacenter);
             }
         }
 
@@ -163,7 +163,7 @@ namespace Consul
                 content = new ByteArrayContent(Serialize(_body));
             }
 
-            var message = new HttpRequestMessage(HttpMethod.Post, BuildConsulUri(Endpoint, Params));
+            var message = new HttpRequestMessage(HttpMethod.Post, BuildConsulUri(Endpoint));
             ApplyHeaders(message, Client.Config);
             message.Content = content;
             var response = await Client.HttpClient.SendAsync(message, ct).ConfigureAwait(false);
@@ -201,7 +201,7 @@ namespace Consul
 
             if (!string.IsNullOrEmpty(Options.Datacenter))
             {
-                Params["dc"] = new [] { Options.Datacenter };
+                Params.Set("dc", Options.Datacenter);
             }
         }
 
@@ -261,7 +261,7 @@ namespace Consul
                 content = new ByteArrayContent(Serialize(_body));
             }
 
-            var message = new HttpRequestMessage(HttpMethod.Post, BuildConsulUri(Endpoint, Params));
+            var message = new HttpRequestMessage(HttpMethod.Post, BuildConsulUri(Endpoint));
             ApplyHeaders(message, Client.Config);
             message.Content = content;
             var response = await Client.HttpClient.SendAsync(message, ct).ConfigureAwait(false);
@@ -304,7 +304,7 @@ namespace Consul
 
             if (!string.IsNullOrEmpty(Options.Datacenter))
             {
-                Params["dc"] = new [] { Options.Datacenter };
+                Params.Set("dc", Options.Datacenter);
             }
         }
 
@@ -350,7 +350,7 @@ namespace Consul
             var bodyBytes = Encoding.UTF8.GetBytes(_body);
             content = new ByteArrayContent(bodyBytes);
 
-            var message = new HttpRequestMessage(HttpMethod.Post, BuildConsulUri(Endpoint, Params));
+            var message = new HttpRequestMessage(HttpMethod.Post, BuildConsulUri(Endpoint));
             ApplyHeaders(message, Client.Config);
             message.Content = content;
             var response = await Client.HttpClient.SendAsync(message, ct).ConfigureAwait(false);
@@ -396,7 +396,7 @@ namespace Consul
 
             if (!string.IsNullOrEmpty(Options.Datacenter))
             {
-                Params["dc"] = new [] { Options.Datacenter };
+                Params.Set("dc", Options.Datacenter);
             }
         }
 

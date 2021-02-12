@@ -57,7 +57,7 @@ namespace Consul
             timer.Start();
             var result = new WriteResult<TOut>();
 
-            var message = new HttpRequestMessage(HttpMethod.Delete, BuildConsulUri(Endpoint, Params));
+            var message = new HttpRequestMessage(HttpMethod.Delete, BuildConsulUri(Endpoint));
             ApplyHeaders(message, Client.Config);
             var response = await Client.HttpClient.SendAsync(message, ct).ConfigureAwait(false);
 
@@ -99,7 +99,7 @@ namespace Consul
 
             if (!string.IsNullOrEmpty(Options.Datacenter))
             {
-                Params["dc"] = new [] { Options.Datacenter };
+                Params.Set("dc", Options.Datacenter);
             }
         }
 
@@ -139,7 +139,7 @@ namespace Consul
             timer.Start();
             var result = new WriteResult();
 
-            var message = new HttpRequestMessage(HttpMethod.Delete, BuildConsulUri(Endpoint, Params));
+            var message = new HttpRequestMessage(HttpMethod.Delete, BuildConsulUri(Endpoint));
             ApplyHeaders(message, Client.Config);
             var response = await Client.HttpClient.SendAsync(message, ct).ConfigureAwait(false);
 
@@ -176,7 +176,7 @@ namespace Consul
 
             if (!string.IsNullOrEmpty(Options.Datacenter))
             {
-                Params["dc"] = new [] { Options.Datacenter };
+                Params.Set("dc", Options.Datacenter);
             }
         }
 
@@ -233,7 +233,7 @@ namespace Consul
                 content = new ByteArrayContent(Serialize(_body));
             }
 
-            var message = new HttpRequestMessage(HttpMethod.Delete, BuildConsulUri(Endpoint, Params));
+            var message = new HttpRequestMessage(HttpMethod.Delete, BuildConsulUri(Endpoint));
             ApplyHeaders(message, Client.Config);
             message.Content = content;
 
@@ -272,7 +272,7 @@ namespace Consul
 
             if (!string.IsNullOrEmpty(Options.Datacenter))
             {
-                Params["dc"] = new [] { Options.Datacenter };
+                Params.Set("dc", Options.Datacenter);
             }
         }
 

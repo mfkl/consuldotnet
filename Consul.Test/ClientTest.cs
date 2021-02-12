@@ -105,10 +105,10 @@ namespace Consul.Test
 
             await Assert.ThrowsAsync<ConsulRequestException>(async () => await request.Execute(CancellationToken.None));
 
-            Assert.Equal("foo", request.Params["dc"].Single());
-            Assert.True(request.Params.ContainsKey("consistent"));
-            Assert.Equal("1000", request.Params["index"].Single());
-            Assert.Equal("1m40s", request.Params["wait"].Single());
+            Assert.Equal("foo", request.Params["dc"]);
+            Assert.True(request.Params["consistent"] == null); // also true if value is null
+            Assert.Equal("1000", request.Params["index"]);
+            Assert.Equal("1m40s", request.Params["wait"]);
         }
 
         [Fact]
@@ -127,8 +127,8 @@ namespace Consul.Test
                 await Assert.ThrowsAsync<ConsulRequestException>(async () =>
                     await request.Execute(CancellationToken.None));
 
-                Assert.Equal("foo", request.Params["dc"].Single());
-                Assert.Equal("1m40s", request.Params["wait"].Single());
+                Assert.Equal("foo", request.Params["dc"]);
+                Assert.Equal("1m40s", request.Params["wait"]);
             }
         }
         [Fact]
@@ -144,7 +144,7 @@ namespace Consul.Test
 
             await Assert.ThrowsAsync<ConsulRequestException>(async () => await request.Execute(CancellationToken.None));
 
-            Assert.Equal("foo", request.Params["dc"].Single());
+            Assert.Equal("foo", request.Params["dc"]);
         }
 
         [Fact]

@@ -281,9 +281,9 @@ namespace Consul
             var req = _client.Put<byte[], bool>(string.Format("/v1/kv/{0}", p.Key.TrimStart('/')), p.Value, q);
             if (p.Flags > 0)
             {
-                req.Params["flags"] = new [] { p.Flags.ToString() };
+                req.Params.Set("flags", p.Flags.ToString());
             }
-            req.Params["acquire"] = new [] { p.Session };
+            req.Params.Set("acquire", p.Session);
             return req.Execute(ct);
         }
 
@@ -309,9 +309,9 @@ namespace Consul
             var req = _client.Put<byte[], bool>(string.Format("/v1/kv/{0}", p.Key.TrimStart('/')), p.Value, q);
             if (p.Flags > 0)
             {
-                req.Params["flags"] = new [] { p.Flags.ToString() };
+                req.Params.Set("flags", p.Flags.ToString());
             }
-            req.Params["cas"] = new [] { p.ModifyIndex.ToString() };
+            req.Params.Set("cas", p.ModifyIndex.ToString());
             return req.Execute(ct);
         }
 
@@ -357,7 +357,7 @@ namespace Consul
         {
             p.Validate();
             var req = _client.DeleteReturning<bool>(string.Format("/v1/kv/{0}", p.Key.TrimStart('/')), q);
-            req.Params.Add("cas", new [] { p.ModifyIndex.ToString() });
+            req.Params.Set("cas", p.ModifyIndex.ToString());
             return req.Execute(ct);
         }
 
@@ -381,7 +381,7 @@ namespace Consul
         {
             KVPair.ValidatePath(prefix);
             var req = _client.DeleteReturning<bool>(string.Format("/v1/kv/{0}", prefix.TrimStart('/')), q);
-            req.Params.Add("recurse", new [] { string.Empty });
+            req.Params.Set("recurse", string.Empty);
             return req.Execute(ct);
         }
 
@@ -441,10 +441,10 @@ namespace Consul
         public Task<QueryResult<string[]>> Keys(string prefix, string separator, QueryOptions q, CancellationToken ct = default(CancellationToken))
         {
             var req = _client.Get<string[]>(string.Format("/v1/kv/{0}", prefix.TrimStart('/')), q);
-            req.Params["keys"] = new [] { string.Empty };
+            req.Params.Set("keys", string.Empty);
             if (!string.IsNullOrEmpty(separator))
             {
-                req.Params["separator"] = new [] { separator };
+                req.Params.Set("separator", separator);
             }
             return req.Execute(ct);
         }
@@ -469,7 +469,7 @@ namespace Consul
         public Task<QueryResult<KVPair[]>> List(string prefix, QueryOptions q, CancellationToken ct = default(CancellationToken))
         {
             var req = _client.Get<KVPair[]>(string.Format("/v1/kv/{0}", prefix.TrimStart('/')), q);
-            req.Params["recurse"] = new [] { string.Empty };
+            req.Params.Set("recurse", string.Empty);
             return req.Execute(ct);
         }
 
@@ -495,7 +495,7 @@ namespace Consul
             var req = _client.Put<byte[], bool>(string.Format("/v1/kv/{0}", p.Key.TrimStart('/')), p.Value, q);
             if (p.Flags > 0)
             {
-                req.Params["flags"] = new [] { p.Flags.ToString() };
+                req.Params.Set("flags", p.Flags.ToString());
             }
             return req.Execute(ct);
         }
@@ -522,9 +522,9 @@ namespace Consul
             var req = _client.Put<object, bool>(string.Format("/v1/kv/{0}", p.Key.TrimStart('/')), q);
             if (p.Flags > 0)
             {
-                req.Params["flags"] = new [] { p.Flags.ToString() };
+                req.Params.Set("flags", p.Flags.ToString());
             }
-            req.Params["release"] = new [] { p.Session };
+            req.Params.Set("release", p.Session);
             return req.Execute(ct);
         }
 

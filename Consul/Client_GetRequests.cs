@@ -58,7 +58,7 @@ namespace Consul
             timer.Start();
             var result = new QueryResult<TOut>();
 
-            var message = new HttpRequestMessage(HttpMethod.Get, BuildConsulUri(Endpoint, Params));
+            var message = new HttpRequestMessage(HttpMethod.Get, BuildConsulUri(Endpoint));
             ApplyHeaders(message, Client.Config);
             var response = await Client.HttpClient.SendAsync(message, ct).ConfigureAwait(false);
 
@@ -102,7 +102,7 @@ namespace Consul
             timer.Start();
             var result = new QueryResult<Stream>();
 
-            var message = new HttpRequestMessage(HttpMethod.Get, BuildConsulUri(Endpoint, Params));
+            var message = new HttpRequestMessage(HttpMethod.Get, BuildConsulUri(Endpoint));
             ApplyHeaders(message, Client.Config);
             var response = await Client.HttpClient.SendAsync(message, HttpCompletionOption.ResponseHeadersRead, ct).ConfigureAwait(false);
 
@@ -133,30 +133,30 @@ namespace Consul
 
             if (!string.IsNullOrEmpty(Options.Datacenter))
             {
-                Params["dc"] = new [] { Options.Datacenter };
+                Params.Set("dc", Options.Datacenter);
             }
             switch (Options.Consistency)
             {
                 case ConsistencyMode.Consistent:
-                    Params["consistent"] = new [] { string.Empty };
+                    Params.Set("consistent", string.Empty);
                     break;
                 case ConsistencyMode.Stale:
-                    Params["stale"] = new [] { string.Empty };
+                    Params.Set("stale", string.Empty);
                     break;
                 case ConsistencyMode.Default:
                     break;
             }
             if (Options.WaitIndex != 0)
             {
-                Params["index"] = new [] { Options.WaitIndex.ToString() };
+                Params.Set("index", Options.WaitIndex.ToString());
             }
             if (Options.WaitTime.HasValue)
             {
-                Params["wait"] = new [] { Options.WaitTime.Value.ToGoDuration() };
+                Params.Set("wait", Options.WaitTime.Value.ToGoDuration());
             }
             if (!string.IsNullOrEmpty(Options.Near))
             {
-                Params["near"] = new [] { Options.Near };
+                Params.Set("near", Options.Near);
             }
         }
 
@@ -249,7 +249,7 @@ namespace Consul
             timer.Start();
             var result = new QueryResult<string>();
 
-            var message = new HttpRequestMessage(HttpMethod.Get, BuildConsulUri(Endpoint, Params));
+            var message = new HttpRequestMessage(HttpMethod.Get, BuildConsulUri(Endpoint));
             ApplyHeaders(message, Client.Config);
             var response = await Client.HttpClient.SendAsync(message, ct).ConfigureAwait(false);
 
@@ -293,7 +293,7 @@ namespace Consul
 
             if (!string.IsNullOrEmpty(Options.Datacenter))
             {
-                Params["dc"] = new [] { Options.Datacenter };
+                Params.Set("dc", Options.Datacenter);
             }
         }
 

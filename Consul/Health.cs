@@ -293,11 +293,11 @@ namespace Consul
             var req = _client.Get<ServiceEntry[]>(string.Format("/v1/health/service/{0}", service), q);
             if (!string.IsNullOrEmpty(tag))
             {
-                req.Params["tag"] = new [] { tag };
+                req.Params.Set("tag", tag);
             }
             if (passingOnly)
             {
-                req.Params["passing"] = new [] { "1" };
+                req.Params.Set("passing", "1");
             }
             return req.Execute(ct);
         }

@@ -393,7 +393,7 @@ namespace Consul
             var req = _client.Get<AgentMember[]>("/v1/agent/members");
             if (wan)
             {
-                req.Params["wan"] = new []{ "1" };
+                req.Params.Set("wan", "1");
             }
             return req.Execute(ct);
         }
@@ -477,7 +477,7 @@ namespace Consul
             var request = _client.PutNothing(string.Format("/v1/agent/check/{0}/{1}", status.LegacyStatus, checkID));
             if (!string.IsNullOrEmpty(note))
             {
-                request.Params.Add("note", new [] { note });
+                request.Params.Set("note", note);
             }
             return request.Execute(ct);
         }
@@ -513,7 +513,7 @@ namespace Consul
             var req = _client.PutNothing(string.Format("/v1/agent/join/{0}", addr));
             if (wan)
             {
-                req.Params["wan"] = new [] { "1" };
+                req.Params.Set("wan", "1");
             }
             return req.Execute(ct);
         }
@@ -556,8 +556,8 @@ namespace Consul
         public Task<WriteResult> EnableServiceMaintenance(string serviceID, string reason, CancellationToken ct = default(CancellationToken))
         {
             var req = _client.PutNothing(string.Format("/v1/agent/service/maintenance/{0}", serviceID));
-            req.Params["enable"] = new [] { "true" };
-            req.Params["reason"] = new [] { reason };
+            req.Params.Set("enable", "true");
+            req.Params.Set("reason", reason);
             return req.Execute(ct);
         }
 
@@ -569,7 +569,7 @@ namespace Consul
         public Task<WriteResult> DisableServiceMaintenance(string serviceID, CancellationToken ct = default(CancellationToken))
         {
             var req = _client.PutNothing(string.Format("/v1/agent/service/maintenance/{0}", serviceID));
-            req.Params["enable"] = new [] { "false" };
+            req.Params.Set("enable", "false");
             return req.Execute(ct);
         }
 
@@ -581,8 +581,8 @@ namespace Consul
         public Task<WriteResult> EnableNodeMaintenance(string reason, CancellationToken ct = default(CancellationToken))
         {
             var req = _client.PutNothing("/v1/agent/maintenance");
-            req.Params["enable"] = new [] { "true" };
-            req.Params["reason"] = new [] { reason };
+            req.Params.Set("enable", "true");
+            req.Params.Set("reason", reason);
             return req.Execute(ct);
         }
 
@@ -593,7 +593,7 @@ namespace Consul
         public Task<WriteResult> DisableNodeMaintenance(CancellationToken ct = default(CancellationToken))
         {
             var req = _client.PutNothing("/v1/agent/maintenance");
-            req.Params["enable"] = new [] { "false" };
+            req.Params.Set("enable", "false");
             return req.Execute(ct);
         }
 
@@ -605,7 +605,7 @@ namespace Consul
         public async Task<LogStream> Monitor(LogLevel level = default(LogLevel), CancellationToken ct = default(CancellationToken))
         {
             var req = _client.Get<Stream>("/v1/agent/monitor");
-            req.Params["loglevel"] = new [] { level.ToString().ToLowerInvariant() };
+            req.Params.Set("loglevel", level.ToString().ToLowerInvariant());
             var res = await req.ExecuteStreaming(ct).ConfigureAwait(false);
             return new LogStream(res.Response);
         }
